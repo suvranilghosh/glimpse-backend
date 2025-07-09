@@ -33,12 +33,16 @@ app.get("/", async (req, res) => {
 app.post("/leads", async (req, res) => {
   try {
     const { data } = req.body;
+
+    //Convert incoming leadId string to int
     const sanitizedData = data.map((row: { leadId: string }) => {
       return {
         ...row,
         leadId: parseInt(row.leadId),
       };
     });
+
+    //create all entries and skip duplicates
     const result = await prisma.leads.createMany({
       data: sanitizedData,
       skipDuplicates: true,
@@ -97,6 +101,7 @@ app.get("/leads", async (req, res) => {
       },
     });
 
+    // Total number of leads
     const total = await prisma.leads.count({ where: searchFilters });
 
     res.json({
