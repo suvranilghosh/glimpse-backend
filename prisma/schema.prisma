@@ -12,13 +12,14 @@ datasource db {
 }
 
 model Leads {
-  leadId              Int    @id
+  leadId              Int      @id
   leadName            String
-  contactInformation  String @unique
+  contactInformation  String   @unique
   source              String
   interestLevel       String
   status              String
   assignedSalesPerson String
+  createdAt           DateTime @default(now())
 }
 
 model User {

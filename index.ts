@@ -16,11 +16,13 @@ interface SearchFilters {
 
 const app = express();
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret";
+const JWT_SECRET = process.env.JWT_SECRET || "";
+console.log(JWT_SECRET);
 
 app.use(cors());
 app.use(express.json());
 
+//--------------------------Health-Check------------------------
 app.get("/", async (req, res) => {
   res.status(200).json({ message: "UP" });
 });
@@ -81,6 +83,7 @@ app.get("/leads", async (req, res) => {
       where: searchFilters,
       skip,
       take,
+      // orderBy,
     });
 
     const total = await prisma.leads.count({ where: searchFilters });
