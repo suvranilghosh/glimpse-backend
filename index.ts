@@ -112,6 +112,17 @@ app.get("/leads", async (req, res) => {
   }
 });
 
+// Delete all leads
+app.delete("/leads", async (req, res) => {
+  try {
+    const data = await prisma.leads.deleteMany({});
+    res.json({ success: true, deleted: data.count });
+  } catch (err) {
+    console.error("Error deleting leads:", err);
+    res.status(500).json({ error: "Failed to delete leads" });
+  }
+});
+
 //---------------------------Auth----------------------------------
 
 //Register
