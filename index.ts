@@ -21,6 +21,10 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret";
 app.use(cors());
 app.use(express.json());
 
+app.get("/", async (req, res) => {
+  res.status(200).json({ message: "UP" });
+});
+
 // --------------------------Leads--------------------------------
 
 // Post leads
