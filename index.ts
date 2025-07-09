@@ -53,7 +53,15 @@ app.post("/leads", async (req, res) => {
 
 //Get All (filtered) leads
 app.get("/leads", async (req, res) => {
-  const { source, interestLevel, status, page, limit, searchQuery } = req.query;
+  const {
+    source,
+    interestLevel,
+    status,
+    page,
+    limit,
+    searchQuery,
+    sortOrder = "desc",
+  } = req.query;
 
   // Check for filters Source, Interest Level, Status. "" refers to option 'All'
   const searchFilters: SearchFilters = {};
@@ -83,7 +91,10 @@ app.get("/leads", async (req, res) => {
       where: searchFilters,
       skip,
       take,
-      // orderBy,
+      // sort by createdAt
+      orderBy: {
+        createdAt: sortOrder === "asc" ? "asc" : "desc",
+      },
     });
 
     const total = await prisma.leads.count({ where: searchFilters });
@@ -100,8 +111,6 @@ app.get("/leads", async (req, res) => {
     res.status(500).json({ error: "Failed to get leads" });
   }
 });
-
-// app.get("/leads/sort");
 
 //---------------------------Auth----------------------------------
 
